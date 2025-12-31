@@ -25,6 +25,17 @@
 <!-- CARRITO -->
 <div id="cart" class="cart">
   <h3>Carrito</h3>
+
+<p id="cart-msg" style="color:green; display:none;">
+  Producto agregado al carrito ✔️
+</p>
+
+<button onclick="clearCart()" style="margin-bottom:10px;">
+  Vaciar carrito
+</button>
+
+
+
   <ul id="cart-items"></ul>
   <p>Total: $<span id="cart-total">0</span></p>
   <button onclick="sendWhatsApp()">Comprar por WhatsApp</button>
@@ -135,18 +146,31 @@
 
 
 
-
 <script>
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+updateCart();
 
 function toggleCart() {
   document.getElementById("cart").classList.toggle("open");
 }
 
 function addToCart(name, price) {
-  cart.push({ name, price });
+  let item = cart.find(p => p.name === name);
+
+  if (item) {
+    item.qty += 1;
+  } else {
+    cart.push({ name, price, qty: 1 });
+  }
+
+  saveCart();
   updateCart();
-  alert(name + " agregado al carrito 🛒");
+  showMessage();
+}
+
+function saveCart() {
+  localStorage.setItem("cart", JSON.stringify(cart));
 }
 
 function updateCart() {
@@ -154,24 +178,76 @@ function updateCart() {
   items.innerHTML = "";
   let total = 0;
 
-  cart.forEach(p => {
+  cart.forEach((p, index) => {
+    const subtotal = p.price * p.qty;
+    total += subtotal;
+
     const li = document.createElement("li");
-    li.textContent = `${p.name} - $${p.price}`;
+    li.innerHTML = `
+      <strong>${p.name}</strong><br>
+      $${p.price} x ${p.qty} = $${subtotal.toFixed(2)}<br>
+      <button onclick="changeQty(${index}, 1)">+</button>
+      <button onclick="changeQty(${index}, -1)">−</button>
+      <button onclick="removeItem(${index})">❌</button>
+    `;
     items.appendChild(li);
-    total += p.price;
   });
 
   document.getElementById("cart-total").textContent = total.toFixed(2);
-  document.getElementById("cart-count").textContent = cart.length;
+  document.getElementById("cart-count").textContent =
+    cart.reduce((sum, p) => sum + p.qty, 0);
+}
+
+function changeQty(index, delta) {
+  cart[index].qty += delta;
+
+  if (cart[index].qty <= 0) {
+    cart.splice(index, 1);
+  }
+
+  saveCart();
+  updateCart();
+}
+
+function removeItem(index) {
+  cart.splice(index, 1);
+  saveCart();
+  updateCart();
+}
+
+function clearCart() {
+  if (!confirm("¿Vaciar todo el carrito?")) return;
+  cart = [];
+  saveCart();
+  updateCart();
+}
+
+function showMessage() {
+  const msg = document.getElementById("cart-msg");
+  if (!msg) return;
+  msg.style.display = "block";
+  setTimeout(() => msg.style.display = "none", 1200);
 }
 
 function sendWhatsApp() {
+  if (cart.length === 0) {
+    alert("El carrito está vacío");
+    return;
+  }
+
   let msg = "Hola, quiero comprar:%0A";
-  cart.forEach(p => msg += `- ${p.name} $${p.price}%0A`);
+  cart.forEach(p => {
+    msg += `- ${p.name} x${p.qty} = $${(p.price * p.qty).toFixed(2)}%0A`;
+  });
+
   window.open("https://wa.me/2321134388?text=" + msg);
 }
 </script>
 
 
+
+
+
 </body>
 </html>
+
