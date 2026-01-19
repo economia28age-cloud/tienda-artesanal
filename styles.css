@@ -88,3 +88,22 @@ nav a, .cart-btn {
 @media (max-width: 600px) {
   nav a { display: none; }
 }
+
+
+//carritoo para la X
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.close-cart {
+  cursor: pointer;
+  font-size: 22px;
+  color: #999;
+}
+
+.close-cart:hover {
+  color: red;
+}
