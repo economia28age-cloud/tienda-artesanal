@@ -24,7 +24,10 @@
 </header>
 <!-- CARRITO -->
 <div id="cart" class="cart">
+  <div class="cart-header">
   <h3>Carrito</h3>
+  <span class="close-cart" onclick="toggleCart()">✖</span>
+</div>
 
 <p id="cart-msg" style="color:green; display:none;">
   Producto agregado al carrito ✔️
@@ -38,8 +41,10 @@
 
   <ul id="cart-items"></ul>
   <p>Total: $<span id="cart-total">0</span></p>
-  <button onclick="sendWhatsApp()">Comprar por WhatsApp</button>
-</div>
+  <button onclick="sendWhatsApp()" class="whatsapp-btn">
+  Comprar por WhatsApp
+</button>
+  </div>
 
 
 
@@ -146,6 +151,8 @@
 
 
 
+
+<!-- JAVASCRIPT -->
 <script>
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -155,7 +162,9 @@ function toggleCart() {
   document.getElementById("cart").classList.toggle("open");
 }
 
+
 function addToCart(name, price) {
+  document.getElementById("cart").classList.add("open");
   let item = cart.find(p => p.name === name);
 
   if (item) {
