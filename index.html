@@ -253,6 +253,27 @@ function sendWhatsApp() {
 
   window.open("https://wa.me/2321134388?text=" + msg);
 }
+
+
+// cerrar ventana de carrito al tocar fuera
+document.addEventListener("click", function (e) {
+  const cart = document.getElementById("cart");
+  const cartBtn = document.querySelector(".cart-btn");
+
+  // Si el carrito está abierto
+  if (!cart.classList.contains("open")) return;
+
+  // Si el clic fue dentro del carrito o en el botón, no cerrar
+  if (cart.contains(e.target) || cartBtn.contains(e.target)) return;
+
+  // Cerrar carrito
+  cart.classList.remove("open");
+});
+
+
+  
+  
+  
 </script>
 
 
@@ -261,3 +282,4 @@ function sendWhatsApp() {
 
 </body>
 </html>
+
