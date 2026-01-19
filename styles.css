@@ -90,7 +90,7 @@ nav a, .cart-btn {
 }
 
 
-//carritoo para la X
+/* carrito para la X */
 .cart-header {
   position: relative;
   margin-bottom: 10px;
@@ -112,4 +112,5 @@ nav a, .cart-btn {
 .close-cart:hover {
   color: red;
 }
+
 
