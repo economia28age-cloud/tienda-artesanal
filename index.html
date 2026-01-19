@@ -8,9 +8,6 @@
 </head>
 <body>
 
-<div id="overlay" class="overlay" onclick="closeCart()"></div>
-
-
 <header class="header">
   <div class="logo">✦ Artisan Crafted</div>
   <nav>
@@ -164,16 +161,7 @@ let cart = JSON.parse(localStorage.getItem("cart")) || [];
 updateCart();
 
 function toggleCart() {
-  const cart = document.getElementById("cart");
-  const overlay = document.getElementById("overlay");
-
-  if (!cart || !overlay) {
-    console.error("Cart u overlay no encontrados");
-    return;
-  }
-
-  cart.classList.toggle("open");
-  overlay.classList.toggle("show");
+  document.getElementById("cart").classList.toggle("open");
 }
 
 
@@ -266,14 +254,20 @@ function sendWhatsApp() {
   window.open("https://wa.me/2321134388?text=" + msg);
 }
 
+// cerrar ventana de carrito al tocar fuera
+document.addEventListener("click", function (e) {
+  const cart = document.getElementById("cart");
+  const cartBtn = document.querySelector(".cart-btn");
 
+  // Si el carrito está abierto
+  if (!cart.classList.contains("open")) return;
 
-function closeCart() {
-  document.getElementById("cart").classList.remove("open");
-  document.getElementById("overlay").classList.remove("show");
-}
+  // Si el clic fue dentro del carrito o en el botón, no cerrar
+  if (cart.contains(e.target) || cartBtn.contains(e.target)) return;
 
-
+  // Cerrar carrito
+  cart.classList.remove("open");
+});
 
 
 </script>
@@ -284,3 +278,4 @@ function closeCart() {
 
 </body>
 </html>
+
