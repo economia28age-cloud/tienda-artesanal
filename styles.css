@@ -92,13 +92,18 @@ nav a, .cart-btn {
 
 //carritoo para la X
 .cart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
+  position: relative;
+  margin-bottom: 10px;
 }
 
-.close-cart {
+.cart-header h3 {
+  margin: 0;
+}
+
+ .close-cart {
+  position: absolute;
+  top: 0;
+  right: 0;
   cursor: pointer;
   font-size: 22px;
   color: #999;
