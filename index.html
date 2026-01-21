@@ -7,6 +7,7 @@
 
   <!-- ========================
        CSS
+       Estilos generales y responsive
   ========================= -->
   <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -14,9 +15,10 @@
 
   <!-- ========================
        HEADER / NAVBAR
+       Contiene título de la tienda y navegación
   ========================= -->
   <header class="header">
-    <h1>Tienda Mágica</h1>
+    <h1>✦ Artisan Crafted</h1>
     <nav>
       <a href="#">Inicio</a>
       <a href="#">Productos</a>
@@ -27,28 +29,39 @@
 
   <!-- ========================
        CONTENEDOR PRINCIPAL
+       Sección de productos: velas y anillos
   ========================= -->
   <div class="container">
+
     <!-- ========================
-         GRID DE PRODUCTOS
+         SECCIÓN DE VELAS
+         Aquí se renderizan dinámicamente las velas
     ========================= -->
     <section id="velas">
       <h2>Velas</h2>
       <div class="grid"></div>
     </section>
 
+    <!-- ========================
+         SECCIÓN DE ANILLOS
+         Aquí se renderizan dinámicamente los anillos
+    ========================= -->
     <section id="anillos">
       <h2>Anillos</h2>
       <div class="grid"></div>
     </section>
+
   </div>
 
   <!-- ========================
        CARRITO (SIDEBAR)
+       Mostrar productos agregados, total y botones
   ========================= -->
   <aside id="cart" class="cart">
+
     <!-- ========================
          HEADER DEL CARRITO
+         Título y botón de cerrar
     ========================= -->
     <div class="cart-header">
       <h3>Mi Carrito</h3>
@@ -56,31 +69,45 @@
     </div>
 
     <!-- ========================
-         LISTA DE ITEMS
+         LISTA DE ITEMS DEL CARRITO
     ========================= -->
     <ul id="cart-items"></ul>
     <p>Total: $<span id="cart-total">0.00</span></p>
-    
+
     <!-- ========================
-         BOTONES
+         BOTONES DE ACCIÓN
+         WhatsApp y vaciar carrito
     ========================= -->
     <button class="whatsapp-btn">Enviar WhatsApp</button>
     <button class="clear-cart">Vaciar carrito</button>
 
     <!-- ========================
          MENSAJES
+         Feedback de usuario al agregar productos
     ========================= -->
     <div id="cart-msg" style="display:none; text-align:center; margin-top:10px; color:green;">
       Producto agregado ✅
     </div>
-
     <p id="empty-cart" style="display:none; text-align:center; margin-top:10px; color:#999;">
       El carrito está vacío
     </p>
+
   </aside>
+<!-- ========================
+     LIGHTBOX PARA VER IMÁGENES GRANDES
+======================== -->
+<div id="lightbox">
+  <img src="" alt="Producto">
+</div>
+<div id="lightbox">
+  <img src="" alt="Producto">
+</div>
+
+
 
   <!-- ========================
        JS
+       Funcionalidad dinámica de productos y carrito
   ========================= -->
   <script src="js/script.js"></script>
 </body>
