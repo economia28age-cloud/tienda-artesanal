@@ -1,78 +1,30 @@
-/* ========================
-   ESTADO DEL CARRITO
-======================== */
+/* =========================
+   ESTADO INICIAL
+========================= */
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
 let products = [
-  /* ========================
-     PRODUCTOS
-  ========================= */
-  {
-    name: "Vela de Sándalo y Cedro",
-    price: 24.99,
-    image: "https://images.unsplash.com/photo-1600180758890-6b94519a8ba6",
-    category: "velas",
-    desc: "Aroma cálido y envolvente.",
-  },
-  {
-    name: "Vela de Lavanda Relajante",
-    price: 24.99,
-    image: "https://images.unsplash.com/photo-1615486364057-8b8f56e9a5e6",
-    category: "velas",
-    desc: "Calma la mente y el cuerpo.",
-  },
-  {
-    name: "Vela Cítrica de Verano",
-    price: 22.99,
-    image: "https://images.unsplash.com/photo-1618220179428-22790b461013",
-    category: "velas",
-    desc: "Fresca y energizante.",
-    
-  },
-  {
-    name: "Vela de Canela Especiada",
-    price: 22.99,
-    image: "https://images.unsplash.com/photo-1615484477201-9f4953340fab",
-    category: "velas",
-    desc: "Aroma intenso y acogedor.",
-    stock: 5
-  },
-  {
-    name: "Anillo de Hueso “Luna”",
-    price: 45.00,
-    image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e",
-    category: "anillos",
-  },
-  {
-    name: "Anillo Minimalista",
-    price: 35.00,
-    image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0",
-    category: "anillos",
-    
-  },
-  {
-    name: "Anillo Geométrico",
-    price: 49.99,
-    image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f",
-    category: "anillos",
-  },
-  {
-    name: "Anillo Turquesa",
-    price: 55.00,
-    image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e",
-    category: "anillos",
-    
-  }
+  // ===== Velas =====
+  { name: "Vela de Sándalo y Cedro", price: 24.99, image: "https://i.pinimg.com/1200x/5e/b8/4a/5eb84acec8f111bc1f1e9b65261c2976.jpg", category: "velas", desc: "Aroma cálido y envolvente." },
+  { name: "Vela de Lavanda Relajante", price: 24.99, image: "https://i.pinimg.com/736x/57/1a/31/571a313824842ee15e5c33cf61c6d6d5.jpg", category: "velas", desc: "Calma la mente y el cuerpo." },
+  { name: "Vela Cítrica de Verano", price: 22.99, image: "img/img1.jpeg", category: "velas", desc: "Fresca y energizante." },
+  { name: "Vela de Canela Especiada", price: 22.99, image: "img/img2.jpeg", category: "velas", desc: "Aroma intenso y acogedor." },
+  // ===== Anillos =====
+  { name: "Anillo de Hueso “Luna”", price: 45.00, image: "img/img3.jpeg", category: "anillos" },
+  { name: "Anillo Minimalista", price: 35.00, image: "img/img4.jpeg", category: "anillos" },
+  { name: "Anillo Geométrico", price: 49.99, image: "img/img6.jpeg", category: "anillos" },
+  { name: "Anillo Turquesa", price: 55.00, image: "img/img7.jpeg", category: "anillos" }
 ];
 
-/* ========================
+/* =========================
    INIT
-======================== */
+========================= */
 renderProducts();
 updateCart();
 
-/* ========================
-   ABRIR / CERRAR CARRITO
-======================== */
+/* =========================
+   EVENTOS DE INTERFAZ
+========================= */
 const cartBtn = document.querySelector(".cart-btn");
 const cartElement = document.getElementById("cart");
 const closeBtn = document.querySelector(".close-cart");
@@ -80,23 +32,10 @@ const closeBtn = document.querySelector(".close-cart");
 if(cartBtn) cartBtn.addEventListener("click", () => cartElement.classList.toggle("open"));
 if(closeBtn) closeBtn.addEventListener("click", () => cartElement.classList.remove("open"));
 
-/* ========================
-   AGREGAR PRODUCTOS
-======================== */
-function addToCart(name, price, btn) {
-  const product = products.find(p => p.name === name);
-  if (!product || product.stock <= 0) return;
-
-  product.stock -= 1;
-  renderProducts();
-
-  if (btn) {
-    btn.disabled = true;
-    setTimeout(() => btn.disabled = false, 800);
-  }
-
-  cartElement.classList.add("open");
-
+/* =========================
+   FUNCIONES DEL CARRITO
+========================= */
+function addToCart(name, price) {
   let item = cart.find(p => p.name === name);
   if(item) item.qty += 1;
   else cart.push({name, price, qty:1});
@@ -106,20 +45,9 @@ function addToCart(name, price, btn) {
   showMessage();
 }
 
-/* ========================
-   GUARDADO
-======================== */
-function saveCart() {
-  localStorage.setItem("cart", JSON.stringify(cart));
-}
+function saveCart() { localStorage.setItem("cart", JSON.stringify(cart)); }
 
-function saveProducts() {
-  localStorage.setItem("products", JSON.stringify(products));
-}
-
-/* ========================
-   RENDER PRODUCTOS
-======================== */
+/* Render productos en la tienda */
 function renderProducts() {
   const velasContainer = document.querySelector("#velas .grid");
   const anillosContainer = document.querySelector("#anillos .grid");
@@ -135,22 +63,16 @@ function renderProducts() {
       <h3>${p.name}</h3>
       ${p.desc ? `<p>${p.desc}</p>` : ""}
       <span class="price">$${p.price}</span>
-      <p class="stock">Stock: ${p.stock}</p>
-      <button ${p.stock === 0 ? "disabled" : ""}>
-        ${p.stock === 0 ? "Agotado" : "Agregar al carrito"}
-      </button>
+      <button>Agregar al carrito</button>
     `;
-
-    card.querySelector("button").addEventListener("click", () => addToCart(p.name, p.price, card.querySelector("button")));
+    card.querySelector("button").addEventListener("click", () => addToCart(p.name, p.price));
 
     if(p.category === "velas") velasContainer.appendChild(card);
     if(p.category === "anillos") anillosContainer.appendChild(card);
   });
 }
 
-/* ========================
-   RENDER CARRITO
-======================== */
+/* Actualizar carrito y total */
 function updateCart() {
   const items = document.getElementById("cart-items");
   const emptyMsg = document.getElementById("empty-cart");
@@ -161,20 +83,14 @@ function updateCart() {
 
   if(cart.length === 0) {
     emptyMsg.style.display = "block";
-    if(whatsappBtn) {
-      whatsappBtn.disabled = true;
-      whatsappBtn.style.opacity = "0.6";
-    }
+    if(whatsappBtn) { whatsappBtn.disabled = true; whatsappBtn.style.opacity = "0.6"; }
     document.getElementById("cart-total").textContent = "0.00";
     document.getElementById("cart-count").textContent = "0";
     return;
   }
 
   emptyMsg.style.display = "none";
-  if(whatsappBtn) {
-    whatsappBtn.disabled = false;
-    whatsappBtn.style.opacity = "1";
-  }
+  if(whatsappBtn) { whatsappBtn.disabled = false; whatsappBtn.style.opacity = "1"; }
 
   cart.forEach((p, index) => {
     const subtotal = p.price * p.qty;
@@ -195,47 +111,31 @@ function updateCart() {
   document.getElementById("cart-count").textContent = cart.reduce((sum,p) => sum+p.qty,0);
 }
 
-/* ========================
-   CAMBIAR CANTIDAD
-======================== */
+/* Cambiar cantidad de producto en carrito */
 function changeQty(index, delta) {
   cart[index].qty += delta;
   if(cart[index].qty <= 0) cart.splice(index,1);
-  renderProducts();
   saveCart();
   updateCart();
 }
 
+/* Eliminar producto del carrito */
 function removeItem(index) {
-  const product = products.find(p => p.name === cart[index].name);
-  if(product) product.stock += cart[index].qty;
   cart.splice(index,1);
-  renderProducts();
   saveCart();
   updateCart();
 }
 
-/* ========================
-   VACIAR CARRITO
-======================== */
+/* Vaciar carrito */
 const clearBtn = document.querySelector(".clear-cart");
 if(clearBtn) clearBtn.addEventListener("click", () => {
   if(!confirm("¿Vaciar todo el carrito?")) return;
-
-  cart.forEach(item => {
-    const product = products.find(p => p.name === item.name);
-    if(product) product.stock += item.qty;
-  });
-
   cart = [];
-  renderProducts();
   saveCart();
   updateCart();
 });
 
-/* ========================
-   MENSAJES
-======================== */
+/* Mostrar mensaje temporal al agregar producto */
 function showMessage() {
   const msg = document.getElementById("cart-msg");
   if(!msg) return;
@@ -243,15 +143,10 @@ function showMessage() {
   setTimeout(() => msg.style.display = "none",1200);
 }
 
-/* ========================
-   WHATSAPP
-======================== */
+/* WhatsApp: enviar pedido completo */
 const whatsappBtn = document.querySelector(".whatsapp-btn");
 if(whatsappBtn) whatsappBtn.addEventListener("click", () => {
-  if(cart.length === 0) {
-    alert("El carrito está vacío");
-    return;
-  }
+  if(cart.length === 0) { alert("El carrito está vacío"); return; }
 
   let msg = "Hola 👋%0AQuiero realizar el siguiente pedido:%0A%0A";
   let total = 0;
@@ -266,14 +161,33 @@ if(whatsappBtn) whatsappBtn.addEventListener("click", () => {
   window.open("https://wa.me/2321134388?text=" + msg);
 });
 
-/* ========================
-   CIERRE AL TOCAR FUERA DEL CARRITO
-======================== */
+/* =========================
+   CIERRE AUTOMÁTICO DEL CARRITO
+========================= */
 document.addEventListener("click", function(e) {
   const cartBtn = document.querySelector(".cart-btn");
   if(!cartElement.classList.contains("open")) return;
   if(cartBtn && cartBtn.contains(e.target)) return;
   cartElement.classList.remove("open");
 });
-
 cartElement.addEventListener("click", e => e.stopPropagation());
+
+
+// =========================
+// LIGHTBOX
+// =========================
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = lightbox.querySelector("img");
+
+// Abrir lightbox al hacer clic en cualquier imagen del producto
+document.querySelectorAll(".card img").forEach(img => {
+  img.addEventListener("click", () => {
+    lightboxImg.src = img.src;
+    lightbox.style.display = "flex"; // mostrar
+  });
+});
+
+// Cerrar lightbox al hacer clic en la imagen
+lightbox.addEventListener("click", () => {
+  lightbox.style.display = "none";
+});
