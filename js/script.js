@@ -79,8 +79,19 @@ const closeBtn = document.querySelector(".close-cart");
 
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = lightbox.querySelector("img");
+lightboxImg.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
 const prevBtn = lightbox.querySelector(".prev");
 const nextBtn = lightbox.querySelector(".next");
+prevBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
+
+nextBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
+
 
 /* ==================================================
    LIGHTBOX ESTADO
