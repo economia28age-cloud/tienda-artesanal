@@ -159,28 +159,67 @@ nav a {
 
 
 /* =========================
-   LIGHTBOX
+   LIGHTBOX PRO
 ========================= */
 #lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.8);
-  display: none;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 9999;
 }
 
+#lightbox.hidden {
+  display: none;
+}
+
+/* Imagen */
 #lightbox img {
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+  cursor: zoom-in;
 }
 
-#lightbox button {
-  background: none;
-  border: none;
+/* Zoom activado */
+#lightbox img.zoomed {
+  transform: scale(2);
+  cursor: zoom-out;
+}
+
+/* Botones */
+#lightbox .close,
+#lightbox .prev,
+#lightbox .next {
+  position: absolute;
   color: white;
-  font-size: 3rem;
+  font-size: 35px;
   cursor: pointer;
-  margin: 0 20px;
+  user-select: none;
+}
+
+/* Cerrar */
+#lightbox .close {
+  top: 20px;
+  right: 25px;
+}
+
+/* Navegación */
+#lightbox .prev {
+  left: 20px;
+}
+
+#lightbox .next {
+  right: 20px;
+}
+
+/* Móvil */
+@media (max-width: 600px) {
+  #lightbox .prev,
+  #lightbox .next {
+    font-size: 45px;
+  }
 }
