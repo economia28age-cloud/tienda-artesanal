@@ -82,6 +82,11 @@ const lightboxImg = lightbox.querySelector("img");
 const prevBtn = lightbox.querySelector(".prev");
 const nextBtn = lightbox.querySelector(".next");
 const closeLightboxBtn = document.querySelector(".close");
+// botón WhatsApp
+const whatsappBtn = document.querySelector(".whatsapp-btn"); // botón WhatsApp
+
+
+
 
 /* ==================================================
    LIGHTBOX – ESTADO
@@ -110,7 +115,8 @@ document.addEventListener("click", e => {
   if (cartBtn.contains(e.target)) return;
   cartElement.classList.remove("open");
 });
-
+// enviar carrito por WhatsApp
+whatsappBtn.addEventListener("click", sendWhatsApp); 
 /* ==================================================
    RENDER PRODUCTOS
 ================================================== */
@@ -330,3 +336,38 @@ themeToggle.addEventListener("click", () => {
   // guardar preferencia
   localStorage.setItem("theme", isDark ? "dark" : "light");
 });
+
+
+// ==================================================
+// Enviar pedido por WhatsApp
+// ==================================================
+function sendWhatsApp() {
+
+  if (cart.length === 0) {
+    alert("El carrito está vacío");
+    return;
+  }
+
+  let mensaje = 
+`Hola,
+Quiero realizar el siguiente pedido:\n\n`;
+
+  let total = 0;
+
+  cart.forEach(item => {
+    const subtotal = item.price * item.qty;
+    total += subtotal;
+
+    mensaje += 
+`${item.name}
+Cantidad: ${item.qty}
+Subtotal: $${subtotal.toFixed(2)}\n\n`;
+  });
+
+  mensaje += `Total: $${total.toFixed(2)}\n\nGracias.`;
+
+  window.open(
+    `https://wa.me/5212321134388?text=${encodeURIComponent(mensaje)}`,
+    "_blank"
+  );
+}
