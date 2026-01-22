@@ -223,3 +223,69 @@ nav a {
     font-size: 45px;
   }
 }
+/* =========================
+   MODO OSCURO
+========================= */
+
+/* transición suave */
+body {
+  transition: background 0.3s, color 0.3s;
+}
+
+/* estado oscuro */
+body.dark {
+  background: #121212;
+  color: #eaeaea;
+}
+
+/* header */
+body.dark .header {
+  background: #1e1e1e;
+}
+
+/* links */
+body.dark nav a {
+  color: #eaeaea;
+}
+
+/* tarjetas */
+body.dark .card {
+  background: #1e1e1e;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+
+/* carrito */
+body.dark .cart {
+  background: #1e1e1e;
+  color: #eaeaea;
+}
+
+/* botones */
+body.dark button {
+  background: #444;
+  color: white;
+}
+
+/* botón toggle */
+#theme-toggle {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* =========================
+   WHATSAPP SIEMPRE VERDE
+========================= */
+
+.whatsapp-btn {
+  background: #25D366 !important;
+  color: white !important;
+}
+
+/* incluso en modo oscuro */
+body.dark .whatsapp-btn {
+  background: #25D366 !important;
+  color: white !important;
+}
