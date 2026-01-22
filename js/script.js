@@ -206,6 +206,33 @@ function removeItem(i) {
   saveCart();
   updateCart();
 }
+/* ==================================================
+   VACIAR CARRITO COMPLETO
+================================================== */
+function clearCart() {
+  console.log("🗑️ Carrito vaciado");
+  cart = [];
+  saveCart();
+  updateCart();
+  document.getElementById("cart-msg").textContent = "Carrito vacío 🗑️";
+document.getElementById("cart-msg").style.display = "block";
+setTimeout(() => {
+  document.getElementById("cart-msg").style.display = "none";
+}, 1200);
+
+}
+/* ==================================================
+   EVENTO BOTÓN VACIAR CARRITO
+================================================== */
+const clearCartBtn = document.querySelector(".clear-cart");
+
+if (clearCartBtn) {
+  clearCartBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // evita cerrar el carrito
+    clearCart();
+  });
+}
+
 
 /* ==================================================
    LIGHTBOX – FUNCIONES
@@ -275,4 +302,31 @@ lightboxImg.addEventListener("touchend", (e) => {
 
   if (diff > 50) nextImage();
   if (diff < -50) prevImage();
+});
+
+
+/* ==================================================
+   MODO OSCURO
+================================================== */
+
+// referencias
+const themeToggle = document.getElementById("theme-toggle");
+
+// cargar preferencia guardada
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark");
+  themeToggle.textContent = "☀️";
+}
+
+// click botón
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+
+  const isDark = document.body.classList.contains("dark");
+
+  // cambiar icono
+  themeToggle.textContent = isDark ? "☀️" : "🌙";
+
+  // guardar preferencia
+  localStorage.setItem("theme", isDark ? "dark" : "light");
 });
