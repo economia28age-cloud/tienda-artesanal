@@ -36,39 +36,38 @@ let products = [
     category: "velas",
     desc: "Fresca y energizante."
   },
- {
-  name: "Vela de Canela Especiada",
-  price: 22.99,
-  images: ["img/img2.jpeg"],
-  category: "velas",
-  desc: "Aroma intenso y acogedor."
-},
-{
-  name: "Anillo de Hueso “Luna”",
-  price: 45.00,
-  images: ["img/img3.jpeg"],
-  category: "anillos"
-},
-{
-  name: "Anillo Minimalista",
-  price: 35.00,
-  images: ["img/img4.jpeg"],
-  category: "anillos"
-},
-{
-  name: "Anillo Geométrico",
-  price: 49.99,
-  images: ["img/img6.jpeg"],
-  category: "anillos"
-},
-{
-  name: "Anillo Turquesa",
-  price: 55.00,
-  images: ["img/img7.jpeg"],
-  category: "anillos"
-}
+  {
+    name: "Vela de Canela Especiada",
+    price: 22.99,
+    images: ["img/img2.jpeg"],
+    category: "velas",
+    desc: "Aroma intenso y acogedor."
+  },
+  {
+    name: "Anillo de Hueso “Luna”",
+    price: 45.00,
+    images: ["img/img3.jpeg"],
+    category: "anillos"
+  },
+  {
+    name: "Anillo Minimalista",
+    price: 35.00,
+    images: ["img/img4.jpeg"],
+    category: "anillos"
+  },
+  {
+    name: "Anillo Geométrico",
+    price: 49.99,
+    images: ["img/img6.jpeg"],
+    category: "anillos"
+  },
+  {
+    name: "Anillo Turquesa",
+    price: 55.00,
+    images: ["img/img7.jpeg"],
+    category: "anillos"
+  }
 ];
-
 
 /* ==================================================
    ELEMENTOS DOM
@@ -77,27 +76,19 @@ const cartBtn = document.querySelector(".cart-btn");
 const cartElement = document.getElementById("cart");
 const closeBtn = document.querySelector(".close-cart");
 
+// LIGHTBOX (SE DECLARA SOLO AQUÍ)
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = lightbox.querySelector("img");
-lightboxImg.addEventListener("click", (e) => {
-  e.stopPropagation();
-});
 const prevBtn = lightbox.querySelector(".prev");
 const nextBtn = lightbox.querySelector(".next");
-prevBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-});
-
-nextBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-});
-
+const closeLightboxBtn = document.querySelector(".close");
 
 /* ==================================================
-   LIGHTBOX ESTADO
+   LIGHTBOX – ESTADO
 ================================================== */
 let currentImages = [];
 let currentIndex = 0;
+let startX = 0;
 
 /* ==================================================
    INIT
@@ -152,45 +143,6 @@ function renderProducts() {
     if (p.category === "anillos") anillos.appendChild(card);
   });
 }
-
-/* ==================================================
-   LIGHTBOX FUNCIONES
-================================================== */
-function openLightbox(images, index) {
-  if (!images || !images.length) return;
-
-  currentImages = images;
-  currentIndex = index;
-  lightboxImg.src = currentImages[currentIndex];
-  lightbox.style.display = "flex";
-}
-
-function showNext() {
-  currentIndex = (currentIndex + 1) % currentImages.length;
-  lightboxImg.src = currentImages[currentIndex];
-}
-
-function showPrev() {
-  currentIndex =
-    (currentIndex - 1 + currentImages.length) % currentImages.length;
-  lightboxImg.src = currentImages[currentIndex];
-}
-
-nextBtn.onclick = e => {
-  e.stopPropagation();
-  showNext();
-};
-
-prevBtn.onclick = e => {
-  e.stopPropagation();
-  showPrev();
-};
-
-lightbox.onclick = e => {
-  if (e.target === lightbox) {
-    lightbox.style.display = "none";
-  }
-};
 
 /* ==================================================
    CARRITO
@@ -254,3 +206,73 @@ function removeItem(i) {
   saveCart();
   updateCart();
 }
+
+/* ==================================================
+   LIGHTBOX – FUNCIONES
+================================================== */
+
+// abrir
+function openLightbox(images, index = 0) {
+  currentImages = images;
+  currentIndex = index;
+  lightboxImg.classList.remove("zoomed"); // reset zoom
+  lightboxImg.src = currentImages[currentIndex];
+  lightbox.classList.remove("hidden");
+}
+
+// cerrar
+function closeLightbox() {
+  lightbox.classList.add("hidden");
+  lightboxImg.classList.remove("zoomed");
+}
+
+/* ==================================================
+   LIGHTBOX – EVENTOS
+================================================== */
+
+// cerrar
+closeLightboxBtn.onclick = closeLightbox;
+lightbox.onclick = closeLightbox;
+
+// evitar cierre + zoom
+lightboxImg.onclick = (e) => {
+  e.stopPropagation();
+  lightboxImg.classList.toggle("zoomed");
+};
+
+// navegación
+function nextImage() {
+  currentIndex = (currentIndex + 1) % currentImages.length;
+  lightboxImg.classList.remove("zoomed");
+  lightboxImg.src = currentImages[currentIndex];
+}
+
+function prevImage() {
+  currentIndex =
+    (currentIndex - 1 + currentImages.length) % currentImages.length;
+  lightboxImg.classList.remove("zoomed");
+  lightboxImg.src = currentImages[currentIndex];
+}
+
+nextBtn.onclick = (e) => {
+  e.stopPropagation();
+  nextImage();
+};
+
+prevBtn.onclick = (e) => {
+  e.stopPropagation();
+  prevImage();
+};
+
+// swipe móvil
+lightboxImg.addEventListener("touchstart", (e) => {
+  startX = e.touches[0].clientX;
+});
+
+lightboxImg.addEventListener("touchend", (e) => {
+  const endX = e.changedTouches[0].clientX;
+  const diff = startX - endX;
+
+  if (diff > 50) nextImage();
+  if (diff < -50) prevImage();
+});
